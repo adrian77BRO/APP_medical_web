@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Signup } from '../models/user';
+import { registerUser } from '../endpoints/userEndpoints';
 
 export const Register: React.FC = () => {
     const [user, setUser] = useState<Signup>({
@@ -24,7 +24,7 @@ export const Register: React.FC = () => {
                 setMessage('Todos los campos son requeridos');
                 return;
             }
-            const response = await axios.post('http://localhost:4000/doctors/register', user);
+            const response = await registerUser(user.fname, user.lname, user.email, user.password);
             Swal.fire({
                 title: '¡Bienvenido!',
                 text: response.data.message,
@@ -42,14 +42,14 @@ export const Register: React.FC = () => {
             <form onSubmit={register} className='p-5 rounded-4 login'>
                 <h3 className='text-center mb-4'>Regístrate aquí</h3>
                 <div className='mb-2'>
-                    <label htmlFor='username' className='form-label'>Nombre</label>
-                    <input type='text' name='username' value={user.fname} onChange={handleChange}
-                        className='form-control' id='username' placeholder='Ingrese un nombre' />
+                    <label htmlFor='fname' className='form-label'>Nombre</label>
+                    <input type='text' name='fname' value={user.fname} onChange={handleChange}
+                        className='form-control' id='fname' placeholder='Ingrese su nombre' />
                 </div>
                 <div className='mb-2'>
-                    <label htmlFor='username' className='form-label'>Apellidos</label>
-                    <input type='text' name='username' value={user.lname} onChange={handleChange}
-                        className='form-control' id='username' placeholder='Ingrese un nombre' />
+                    <label htmlFor='lname' className='form-label'>Apellidos</label>
+                    <input type='text' name='lname' value={user.lname} onChange={handleChange}
+                        className='form-control' id='lname' placeholder='Ingrese sus apellidos' />
                 </div>
                 <div className='mb-2'>
                     <label htmlFor='email' className='form-label'>Correo electrónico</label>

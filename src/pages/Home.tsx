@@ -2,9 +2,10 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { ListJobs } from '../components/ListJobs';
 import { Header } from '../components/Header';
+import { getUsername } from '../storage/user';
 
 export const Home: React.FC = () => {
-    const username = localStorage.getItem('user');
+    const username = getUsername();
 
     return (
         <>

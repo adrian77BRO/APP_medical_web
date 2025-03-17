@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { CardJob } from './CardJob';
 import { FormJob } from './FormJob';
 import { Job } from '../models/job';
+import { getAllJobs } from '../endpoints/jobEndpoints';
 
 export const ListJobs: React.FC = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
@@ -11,23 +11,21 @@ export const ListJobs: React.FC = () => {
     const closeModal = () => setShowModal(false);
 
     useEffect(() => {
-        getAllJobs()
+        loadJobs()
     }, []);
 
-    const getAllJobs = async () => {
+    const loadJobs = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const id = localStorage.getItem('id_doctor');
-            const response = await axios.get(`http://localhost:4000/jobs/${id}`, {
-                headers: {
-                    'Authorization': token
-                }
-            });
+            const response = await getAllJobs();
             setJobs(response.data.jobs);
         } catch (error) {
             console.error('Error al obtener los servicios:', error);
         }
     }
+
+    const handleJobCreated = () => {
+        loadJobs();
+    };
 
     return (
         <>
@@ -54,7 +52,7 @@ export const ListJobs: React.FC = () => {
                     </div>
                 )}
             </div>
-            <FormJob show={showModal} close={closeModal} />
+            <FormJob show={showModal} close={closeModal} onJobCreated={handleJobCreated} />
         </>
     );
 };

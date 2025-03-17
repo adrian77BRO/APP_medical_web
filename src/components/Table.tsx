@@ -1,31 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Appointment } from '../models/appointment';
+import { confirmAppointment, getPendingAppointments } from '../endpoints/appointmentEndpoints';
 
 export const Table: React.FC = () => {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const token = localStorage.getItem('token');
-    const id = localStorage.getItem('id_doctor');
 
     useEffect(() => {
-        getPendingAppointments()
+        loadAppointments()
     }, []);
 
-    const getPendingAppointments = async () => {
+    const loadAppointments = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/appoints/pending/${id}`, {
-                headers: {
-                    'Authorization': token
-                }
-            });
+            const response = await getPendingAppointments();
             setAppointments(response.data.appointments);
         } catch (error) {
             console.error('Error al obtener las citas:', error);
         }
     }
 
-    const confirmAppointment = async (id_appoint: number) => {
+    const handleConfirmAppointment = async (id_appoint: number) => {
         try {
             const result = await Swal.fire({
                 title: '¿Confirmar cita del paciente?',
@@ -37,17 +31,13 @@ export const Table: React.FC = () => {
             });
 
             if (result.isConfirmed) {
-                const response = await axios.put(`http://localhost:4000/appoints/${id_appoint}`, {}, {
-                    headers: {
-                        'Authorization': token
-                    }
-                });
+                const response = await confirmAppointment(id_appoint);
                 Swal.fire({
                     title: 'Cita confirmada',
                     text: response.data.message,
                     icon: 'success'
                 });
-                getPendingAppointments();
+                loadAppointments();
             }
         } catch (error) {
             console.error('Error al confirmar la cita:', error);
@@ -86,7 +76,7 @@ export const Table: React.FC = () => {
                                     <td>{appointment.title}</td>
                                     <td>
                                         <button type='submit' className='btn btn-primary m-2'
-                                            onClick={() => confirmAppointment(appointment.id_appoint)}>Confirmar
+                                            onClick={() => handleConfirmAppointment(appointment.id_appoint)}>Confirmar
                                         </button>
                                     </td>
                                 </tr>

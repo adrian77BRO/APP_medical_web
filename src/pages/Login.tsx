@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { LoginReq } from '../models/user';
+import { setToken } from '../storage/token';
+import { setDoctorId, setUsername } from '../storage/user';
+import { loginUser } from '../endpoints/userEndpoints';
 
 const Login: React.FC = () => {
     const [user, setUser] = useState<LoginReq>({
@@ -25,16 +27,18 @@ const Login: React.FC = () => {
                 setMessage('Todos los campos son requeridos');
                 return;
             }
-            const response = await axios.post('http://localhost:4000/doctors/login', user);
+            const response = await loginUser(user.email, user.password);
             Swal.fire({
                 title: '¡Bienvenido!',
                 text: response.data.message,
                 icon: 'success'
             });
             const name = response.data.user.fname + ' ' + response.data.user.lname;
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', name);
-            localStorage.setItem('id_doctor', response.data.user.id_doctor);
+
+            setToken(response.data.token);
+            setDoctorId(response.data.user.id_doctor);
+            setUsername(name);
+
             navigate('/home');
             setMessage('');
         } catch (error: any) {
