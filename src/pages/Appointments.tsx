@@ -1,11 +1,9 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { ListJobs } from '../components/ListJobs';
 import { Header } from '../components/Header';
+import { Table } from '../components/Table'
 
-export const Home: React.FC = () => {
-    const username = localStorage.getItem('user');
-
+export const Appoinments: React.FC = () => {
     return (
         <>
             <Header />
@@ -14,8 +12,8 @@ export const Home: React.FC = () => {
                     <Col className='p-3'>
                         <Row>
                             <Col>
-                                <h2 className='text-center m-3'>Servicios médicos de {username}</h2>
-                                <ListJobs />
+                                <h1 className='text-center m-3'>Citas por atender</h1>
+                                <Table />
                             </Col>
                         </Row>
                     </Col>

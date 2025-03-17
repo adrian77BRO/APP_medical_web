@@ -31,8 +31,9 @@ const Login: React.FC = () => {
                 text: response.data.message,
                 icon: 'success'
             });
+            const name = response.data.user.fname + ' ' + response.data.user.lname;
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', response.data.user.username);
+            localStorage.setItem('user', name);
             localStorage.setItem('id_doctor', response.data.user.id_doctor);
             navigate('/home');
             setMessage('');

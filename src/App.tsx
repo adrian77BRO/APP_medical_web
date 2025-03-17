@@ -5,6 +5,7 @@ import { Home } from './pages/Home';
 import { ProtectedRoutes } from './pages/ProtectedRoutes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { Appoinments } from './pages/Appointments';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route element={<ProtectedRoutes />}>
           <Route path='/home' element={<Home />} />
+          <Route path='/appointments' element={<Appoinments />} />
         </Route>
         <Route path='*' element={<h1>Not Founded</h1>} />
       </Routes>

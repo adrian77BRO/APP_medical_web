@@ -20,7 +20,7 @@ export const ListJobs: React.FC = () => {
             const id = localStorage.getItem('id_doctor');
             const response = await axios.get(`http://localhost:4000/jobs/${id}`, {
                 headers: {
-                    'Authorization': `${token}`
+                    'Authorization': token
                 }
             });
             setJobs(response.data.jobs);
@@ -31,9 +31,17 @@ export const ListJobs: React.FC = () => {
 
     return (
         <>
-            {jobs.length === 0 ? <h3 className='p-3 text-center border border-black rounded-3'>
-                No ha registrado ningún servicio</h3> :
-                <div className='container p-3'>
+            <div className='container p-2'>
+                <div className='d-flex justify-content-center'>
+                    <button type='button' className='btn btn-success mb-4' onClick={openModal}>
+                        Agregar servicio médico
+                    </button>
+                </div>
+                {jobs.length === 0 ? (
+                    <h3 className='p-3 mb-5 text-center text-muted rounded-3'>
+                        No ha registrado ningún servicio
+                    </h3>
+                ) : (
                     <div className='row gy-3 row-cols-2'>
                         {jobs.map(job => (
                             <CardJob
@@ -44,13 +52,9 @@ export const ListJobs: React.FC = () => {
                             />
                         ))}
                     </div>
-                </div>}
-            <button type='submit' className='btn btn-success ms-5' onClick={openModal}>
-                Agregar servicio médico</button>
-            <FormJob
-                show={showModal}
-                close={closeModal}
-            />
+                )}
+            </div>
+            <FormJob show={showModal} close={closeModal} />
         </>
     );
 };

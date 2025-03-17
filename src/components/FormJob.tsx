@@ -32,7 +32,7 @@ export const FormJob: React.FC<ModalProps> = ({ show, close }) => {
             }
             const response = await axios.post(`http://localhost:4000/jobs/${id}`, job, {
                 headers: {
-                    'Authorization': `${token}`
+                    'Authorization': token
                 }
             });
             Swal.fire({

@@ -8,7 +8,7 @@ export const CardJob: React.FC<JobCard> = ({
     return (
         <div className='col-lg-3'>
             <div className='cards p-2 m-1'>
-                <img src={jobIcon} className='job_card' alt='' />
+                <img src={jobIcon} className='job-card' alt='' />
                 <h6 className='mt-2'>{title}</h6>
                 <p className='mb-2'>{description}</p>
                 <h6 className='mt-2'>{`Costo: $${cost}`}</h6>
